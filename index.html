@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Discovery Home Care – Acknowledgement Form</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/4.1.7/signature_pad.umd.min.js"></script>
+<style>
+  :root {
+    --gold: #C8A84B;
+    --gold-light: #F5EDD6;
+    --discovery-blue: #1B3F7A;
+    --discovery-blue-light: #E8EEF7;
+    --text: #1a1a1a;
+    --muted: #5a5a5a;
+    --border: #D0CFC8;
+    --bg: #F7F6F2;
+    --white: #ffffff;
+    --section-header: #1B3F7A;
+    --radius: 6px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0 0 4rem;
+  }
+
+  .app-header {
+    background: var(--discovery-blue);
+    color: white;
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 4px solid var(--gold);
+  }
+
+  .app-header .brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .logo-mark {
+    width: 44px; height: 44px;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: bold; color: var(--gold);
+    font-family: 'Georgia', serif;
+  }
+
+  .app-header h1 {
+    font-size: 1.1rem;
+    font-weight: normal;
+    letter-spacing: 0.03em;
+    color: white;
+  }
+
+  .app-header p {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.65);
+    font-family: Arial, sans-serif;
+    margin-top: 2px;
+  }
+
+  .progress-bar {
+    height: 3px;
+    background: rgba(255,255,255,0.15);
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--gold);
+    width: 33%;
+    transition: width 0.4s ease;
+  }
+
+  .form-wrapper {
+    max-width: 860px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+  }
+
+  .form-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+
+  .section-header {
+    background: var(--section-header);
+    color: white;
+    padding: 0.75rem 1.25rem;
+    font-family: Arial, sans-serif;
+    font-size: 0.85rem;
+    font-weight: bold;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .section-body {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .field-row {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .field-row.cols-2 { grid-template-columns: 1fr 1fr; }
+  .field-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .field-row.cols-auto { grid-template-columns: auto 1fr; }
+  .field-row.title-row { grid-template-columns: 180px 1fr; }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .field label {
+    font-family: Arial, sans-serif;
+    font-size: 0.72rem;
+    color: var(--muted);
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .field label .req { color: #c0392b; margin-left: 2px; }
+
+  .field input, .field select, .field textarea {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.5rem 0.65rem;
+    font-family: 'Georgia', serif;
+    font-size: 0.9rem;
+    color: var(--text);
+    background: var(--white);
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+
+  .field input:focus, .field select:focus, .field textarea:focus {
+    border-color: var(--discovery-blue);
+    box-shadow: 0 0 0 2px rgba(27,63,122,0.12);
+  }
+
+  .field select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%235a5a5a'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 28px;
+  }
+
+  .narrative-block {
+    background: var(--discovery-blue-light);
+    border-left: 3px solid var(--discovery-blue);
+    padding: 0.9rem 1rem;
+    margin-bottom: 1.25rem;
+    border-radius: 0 4px 4px 0;
+    font-family: Arial, sans-serif;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    color: #1B3F7A;
+  }
+
+  .narrative-block strong { font-weight: bold; }
+
+  .inline-sentence {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-family: Arial, sans-serif;
+    font-size: 0.88rem;
+    color: var(--muted);
+    margin-bottom: 1rem;
+    padding: 0.75rem 1rem;
+    background: #FAFAF8;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+  }
+
+  .inline-sentence .inline-field {
+    flex: 1;
+    min-width: 140px;
+    border-bottom: 2px solid var(--discovery-blue);
+    border-top: none; border-left: none; border-right: none;
+    border-radius: 0;
+    padding: 2px 4px;
+    font-family: 'Georgia', serif;
+    font-size: 0.9rem;
+    background: transparent;
+    outline: none;
+    color: var(--text);
+  }
+
+  .inline-sentence .inline-field:focus {
+    background: rgba(27,63,122,0.05);
+    box-shadow: none;
+  }
+
+  .disclaimer-text {
+    font-family: Arial, sans-serif;
+    font-size: 0.8rem;
+    line-height: 1.7;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+
+  .disclaimer-text p { margin-bottom: 0.6rem; }
+  .disclaimer-text ul { padding-left: 1.4rem; margin-bottom: 0.6rem; }
+  .disclaimer-text li { margin-bottom: 0.35rem; }
+  .disclaimer-text strong { font-weight: bold; }
+
+  .sig-area {
+    margin-top: 0.75rem;
+  }
+
+  .sig-area label {
+    font-family: Arial, sans-serif;
+    font-size: 0.72rem;
+    color: var(--muted);
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .sig-area label .req { color: #c0392b; margin-left: 2px; }
+
+  .sig-canvas-wrap {
+    border: 1.5px solid var(--border);
+    border-radius: 4px;
+    background: #FDFDFB;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .sig-canvas-wrap canvas {
+    display: block;
+    width: 100%;
+    height: 160px;
+    cursor: crosshair;
+    touch-action: none;
+  }
+
+  .sig-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .btn-clear {
+    font-family: Arial, sans-serif;
+    font-size: 0.75rem;
+    padding: 4px 12px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+    color: var(--muted);
+    transition: all 0.15s;
+  }
+  .btn-clear:hover { background: #f0f0f0; border-color: #aaa; }
+
+  .sig-hint {
+    font-family: Arial, sans-serif;
+    font-size: 0.72rem;
+    color: #aaa;
+    margin-top: 4px;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 1.25rem 0;
+  }
+
+  .bottom-sentence {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-family: Arial, sans-serif;
+    font-size: 0.88rem;
+    color: var(--muted);
+    margin-bottom: 1rem;
+  }
+
+  .bottom-sentence input {
+    border: none;
+    border-bottom: 1.5px solid var(--discovery-blue);
+    border-radius: 0;
+    padding: 2px 4px;
+    font-family: 'Georgia', serif;
+    font-size: 0.9rem;
+    background: transparent;
+    outline: none;
+    min-width: 180px;
+    flex: 1;
+  }
+
+  .bottom-sentence input:focus { background: rgba(27,63,122,0.05); }
+
+  .action-bar {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .btn-generate {
+    background: var(--discovery-blue);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.9rem 2.5rem;
+    font-family: Arial, sans-serif;
+    font-size: 0.95rem;
+    font-weight: bold;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    border-bottom: 3px solid var(--gold);
+  }
+
+  .btn-generate:hover { background: #122d5a; }
+  .btn-generate:active { transform: scale(0.98); }
+
+  .btn-generate:disabled {
+    background: #aaa;
+    border-bottom-color: #888;
+    cursor: not-allowed;
+  }
+
+  .btn-reset {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.9rem 1.5rem;
+    font-family: Arial, sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .btn-reset:hover { background: #f0f0f0; }
+
+  .validation-msg {
+    font-family: Arial, sans-serif;
+    font-size: 0.8rem;
+    color: #c0392b;
+    text-align: center;
+    margin-top: 0.75rem;
+    display: none;
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 2rem; left: 50%; transform: translateX(-50%);
+    background: #1B3F7A;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-family: Arial, sans-serif;
+    font-size: 0.85rem;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    z-index: 999;
+    border-bottom: 3px solid var(--gold);
+  }
+  .toast.show { opacity: 1; }
+
+  .field-row.sig-date-row {
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 600px) {
+    .field-row.cols-2, .field-row.cols-3, .field-row.title-row {
+      grid-template-columns: 1fr;
+    }
+    .field-row.sig-date-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app-header">
+  <div class="brand">
+    <div class="logo-mark">D</div>
+    <div>
+      <h1>Discovery Home Care</h1>
+      <p>Acknowledgement Form — Digital Capture</p>
+    </div>
+  </div>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+<div class="form-wrapper">
+
+  <!-- SECTION 1 -->
+  <div class="form-card">
+    <div class="section-header">1. Discovery Home Care Service Acknowledgement Form</div>
+    <div class="section-body">
+
+      <div class="field-row title-row">
+        <div class="field">
+          <label>Title</label>
+          <select id="title">
+            <option value="">— Select —</option>
+            <option>Mr</option><option>Mrs</option><option>Ms</option>
+            <option>Miss</option><option>Dr</option><option>Prof</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Initials</label>
+          <input type="text" id="initials" placeholder="e.g. A B" maxlength="10"/>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Surname <span class="req">*</span></label>
+          <input type="text" id="surname" placeholder="Patient surname"/>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>First name(s) <span class="req">*</span></label>
+          <input type="text" id="firstname" placeholder="Patient first name(s)"/>
+        </div>
+      </div>
+
+      <div class="field-row cols-2">
+        <div class="field">
+          <label>ID or Passport Number <span class="req">*</span></label>
+          <input type="text" id="idNumber" placeholder="13-digit ID or passport"/>
+        </div>
+        <div class="field">
+          <label>Membership Number</label>
+          <input type="text" id="membershipNumber" placeholder="Discovery membership no."/>
+        </div>
+      </div>
+
+      <div class="field-row cols-2">
+        <div class="field">
+          <label>Email</label>
+          <input type="email" id="email" placeholder="email@example.com"/>
+        </div>
+        <div class="field">
+          <label>Scheme Name</label>
+          <input type="text" id="schemeName" placeholder="e.g. Discovery Health"/>
+        </div>
+      </div>
+
+      <hr class="divider"/>
+
+      <div class="narrative-block">
+        The section below captures the acknowledgment statement. Please fill in each field — it will appear in the generated PDF exactly as shown.
+      </div>
+
+      <div class="inline-sentence">
+        <span>I,</span>
+        <input class="inline-field" type="text" id="signerName" placeholder="Full name of patient or next of kin"/>
+        <span style="white-space:nowrap">(name of patient or next of kin)</span>
+      </div>
+
+      <div class="field-row">
+        <div class="field">
+          <label>Signer's ID Number <span class="req">*</span></label>
+          <input type="text" id="signerIdNumber" placeholder="ID number of person signing"/>
+        </div>
+      </div>
+
+      <div class="inline-sentence" style="margin-top:0.5rem;">
+        <input class="inline-field" type="text" id="nurseName" placeholder="Name of nurse"/>
+        <span style="white-space:nowrap">has visited me /</span>
+        <input class="inline-field" type="text" id="patientNameIfNok" placeholder="Name of patient (if next of kin signing)"/>
+      </div>
+
+      <div class="inline-sentence" style="margin-top:0.5rem;">
+        <span style="white-space:nowrap">(name of patient if next of kin) today to deliver the recommended services on</span>
+        <input class="inline-field" type="date" id="serviceDate" style="min-width:140px; flex:0;"/>
+      </div>
+
+      <div class="field-row" style="margin-top:0.75rem;">
+        <div class="field">
+          <label>Physical Address <span class="req">*</span></label>
+          <input type="text" id="physicalAddress" placeholder="Service delivery address"/>
+        </div>
+      </div>
+
+      <hr class="divider"/>
+
+      <div class="field-row sig-date-row">
+        <div class="sig-area">
+          <label>Signature of Patient or Next of Kin <span class="req">*</span></label>
+          <div class="sig-canvas-wrap">
+            <canvas id="sig1Canvas"></canvas>
+          </div>
+          <div class="sig-actions">
+            <button class="btn-clear" onclick="clearSig(1)">Clear signature</button>
+          </div>
+          <p class="sig-hint">Sign with mouse, stylus, or finger</p>
+        </div>
+        <div class="field" style="min-width:160px;">
+          <label>Date Signed <span class="req">*</span></label>
+          <input type="date" id="sig1Date"/>
+        </div>
+      </div>
+
+      <hr class="divider"/>
+
+      <div class="field-row cols-2">
+        <div class="field">
+          <label>Member's Contact Number</label>
+          <input type="tel" id="contactNumber" placeholder="e.g. 011 234 5678"/>
+        </div>
+      </div>
+
+      <div class="field-row" style="margin-top:0.5rem;">
+        <div class="field">
+          <label>Next of Kin — Full Name and Surname</label>
+          <input type="text" id="nokName" placeholder="Next of kin full name (if applicable)"/>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="form-card">
+    <div class="section-header">2. Discovery Home Care Disclaimer</div>
+    <div class="section-body">
+
+      <div class="disclaimer-text">
+        <p>Home Care is a service Discovery offers as an alternative to receiving healthcare services in a hospital. This means that you can receive the healthcare services that you would normally receive from medical professionals while you are in hospital, in the comfort of your home. Home Care also provides you with healthcare services in a controlled, safe, sterile, and calm environment to allow a faster recovery. The benefits of Discovery Home Care are noticeable when you follow the treatment protocols, advice, and instructions that the medical professional gives.</p>
+        <p><strong>You cannot hold us responsible.</strong> You cannot hold Discovery Health, Home Care or any medical professional responsible:</p>
+        <ul>
+          <li>For any harm or for the cost of any complications that occur if you do not follow their recommendations on how and where your treatment should happen.</li>
+          <li>For any harm that stems from when you do not adhere to treatment advice given to you</li>
+          <li>For any harm that you may suffer as a result of you not providing all necessary information pertaining to your current health status.</li>
+          <li>For any harm that you may suffer due to the unpredictability of the COVID-19 virus, which results in you needing to be admitted to hospital or you having a life-threatening medical condition.</li>
+        </ul>
+        <p><strong>The medical professional will have direct contact with you</strong></p>
+        <p>You acknowledge that the treatment calls for and involves direct contact, including physical contact with yourself or other individuals.</p>
+        <p>Since in or around January 2020, there has been and there is still a worldwide pandemic commonly referred to as the COVID-19 pandemic. The COVID-19 virus is highly contagious and capable of widespread person-to-person transmission.</p>
+        <p>The medical professional may come into direct or close contact with patients or other individuals who have contracted COVID-19 or who might otherwise be contagious and may be exposed to or contract COVID-19.</p>
+        <p>There is and can be no guarantee that the medical professional will not be exposed to or contract COVID-19.</p>
+      </div>
+
+      <div class="inline-sentence">
+        <span>I,</span>
+        <input class="inline-field" type="text" id="disclaimerSignerName" placeholder="Full name"/>
+        <span>have read these terms and conditions and I agree to them.</span>
+      </div>
+
+      <div class="bottom-sentence" style="margin-top:0.75rem;">
+        <span>Signed at</span>
+        <input type="text" id="signedAt" placeholder="Location signed"/>
+        <span>on</span>
+        <input type="date" id="sig2Date" style="min-width:150px; flex:0; border:none; border-bottom:1.5px solid var(--discovery-blue); border-radius:0; padding:2px 4px; font-family:'Georgia',serif; font-size:0.9rem; background:transparent; outline:none;"/>
+      </div>
+
+      <div class="field-row sig-date-row" style="margin-top:0.75rem;">
+        <div class="sig-area">
+          <label>Signature <span class="req">*</span></label>
+          <div class="sig-canvas-wrap">
+            <canvas id="sig2Canvas"></canvas>
+          </div>
+          <div class="sig-actions">
+            <button class="btn-clear" onclick="clearSig(2)">Clear signature</button>
+          </div>
+          <p class="sig-hint">Sign with mouse, stylus, or finger</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <p class="validation-msg" id="validationMsg">Please fill in all required fields and provide both signatures before generating the PDF.</p>
+
+  <div class="action-bar">
+    <button class="btn-reset" onclick="resetForm()">Reset Form</button>
+    <button class="btn-generate" id="generateBtn" onclick="generatePDF()">Generate &amp; Download PDF</button>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let pad1, pad2;
+
+function initPads() {
+  const c1 = document.getElementById('sig1Canvas');
+  const c2 = document.getElementById('sig2Canvas');
+  function setSize(canvas) {
+    const wrap = canvas.parentElement;
+    const ratio = window.devicePixelRatio || 1;
+    canvas.width = wrap.clientWidth * ratio;
+    canvas.height = 160 * ratio;
+    canvas.getContext('2d').scale(ratio, ratio);
+  }
+  setSize(c1); setSize(c2);
+  pad1 = new SignaturePad(c1, { penColor: '#1B3F7A', backgroundColor: 'rgba(0,0,0,0)' });
+  pad2 = new SignaturePad(c2, { penColor: '#1B3F7A', backgroundColor: 'rgba(0,0,0,0)' });
+}
+
+function clearSig(n) {
+  if (n === 1) pad1.clear();
+  else pad2.clear();
+}
+
+function resetForm() {
+  if (!confirm('Reset all fields and signatures?')) return;
+  document.querySelectorAll('input, select').forEach(el => el.value = '');
+  pad1.clear(); pad2.clear();
+  document.getElementById('validationMsg').style.display = 'none';
+}
+
+function fmtDate(val) {
+  if (!val) return '';
+  const [y, m, d] = val.split('-');
+  return `${d}/${m}/${y}`;
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function val(id) { return (document.getElementById(id)?.value || '').trim(); }
+
+async function generatePDF() {
+  const required = ['surname','firstname','idNumber','signerName','signerIdNumber','nurseName','serviceDate','physicalAddress','sig1Date'];
+  let missing = required.filter(id => !val(id));
+  if (pad1.isEmpty()) missing.push('sig1');
+  if (pad2.isEmpty()) missing.push('sig2');
+
+  if (missing.length > 0) {
+    document.getElementById('validationMsg').style.display = 'block';
+    document.getElementById('validationMsg').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    return;
+  }
+  document.getElementById('validationMsg').style.display = 'none';
+
+  const btn = document.getElementById('generateBtn');
+  btn.disabled = true;
+  btn.textContent = 'Generating PDF…';
+
+  try {
+    const { PDFDocument, rgb, StandardFonts } = PDFLib;
+    const pdfDoc = await PDFDocument.create();
+    const page = pdfDoc.addPage([595.28, 841.89]); // A4
+    const { width, height } = page.getSize();
+
+    const fontRegular = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+    const fontItalic = await pdfDoc.embedFont(StandardFonts.HelveticaOblique);
+
+    const blue = rgb(0.106, 0.247, 0.478);
+    const gold = rgb(0.784, 0.659, 0.294);
+    const black = rgb(0,0,0);
+    const white = rgb(1,1,1);
+    const lightBlue = rgb(0.91, 0.933, 0.965);
+    const gray = rgb(0.5, 0.5, 0.5);
+    const lightGray = rgb(0.92, 0.92, 0.92);
+
+    const margin = 36;
+    const W = width - margin * 2;
+
+    // Header background
+    page.drawRectangle({ x: 0, y: height - 70, width, height: 70, color: white });
+    page.drawLine({ start: {x:0, y: height-70}, end: {x:width, y: height-70}, thickness: 3, color: gold });
+
+    // Title
+    page.drawText('Discovery Home Care acknowledgement form', {
+      x: margin, y: height - 42,
+      size: 15, font: fontBold, color: blue
+    });
+
+    // Discovery logo text (right)
+    page.drawRectangle({ x: width - 130, y: height - 62, width: 100, height: 40, color: lightBlue, borderRadius: 4 });
+    page.drawText('Discovery', { x: width - 125, y: height - 35, size: 11, font: fontBold, color: blue });
+    page.drawText('Health', { x: width - 115, y: height - 49, size: 9, font: fontRegular, color: blue });
+
+    // Thin separator
+    page.drawLine({ start: {x: margin, y: height-72}, end: {x: width - margin, y: height-72}, thickness: 0.5, color: lightGray });
+
+    let y = height - 88;
+
+    // Section 1 header
+    page.drawRectangle({ x: margin, y: y - 14, width: W, height: 20, color: blue });
+    page.drawText('1. Discovery Home Care service acknowledgment form', {
+      x: margin + 6, y: y - 10, size: 8.5, font: fontBold, color: white
+    });
+    y -= 26;
+
+    // Helper: draw a labeled box row
+    function drawRow(label, value, yPos, xOffset=0, rowWidth=null) {
+      const rw = rowWidth || W;
+      page.drawRectangle({ x: margin + xOffset, y: yPos - 14, width: rw, height: 20, color: white,
+        borderColor: lightGray, borderWidth: 0.5 });
+      page.drawText(label, { x: margin + xOffset + 4, y: yPos - 3, size: 7, font: fontBold, color: gray });
+      if (value) page.drawText(value, { x: margin + xOffset + 4, y: yPos - 12, size: 9, font: fontRegular, color: black });
+      return yPos - 22;
+    }
+
+    function drawTwoCol(label1, val1, label2, val2, yPos) {
+      const hw = W / 2 - 2;
+      drawRow(label1, val1, yPos, 0, hw);
+      drawRow(label2, val2, yPos, hw + 4, hw - 4);
+      return yPos - 22;
+    }
+
+    // Title / Initials
+    y = drawTwoCol('Title', val('title'), 'Initial(s)', val('initials'), y);
+    y = drawRow('Surname', val('surname'), y);
+    y = drawRow('First name(s)', val('firstname'), y);
+    y = drawTwoCol('ID or passport number', val('idNumber'), 'Membership number', val('membershipNumber'), y);
+    y = drawTwoCol('Email', val('email'), 'Scheme name', val('schemeName'), y);
+
+    // Acknowledgment sentence
+    y -= 6;
+    page.drawText('I,', { x: margin, y, size: 9, font: fontRegular, color: black });
+    page.drawText(val('signerName'), { x: margin + 14, y, size: 9, font: fontBold, color: black });
+    page.drawText('(name of patient or next of kin)', { x: width - margin - 145, y, size: 7, font: fontItalic, color: gray });
+    y -= 3;
+    page.drawLine({ start:{x: margin+14, y}, end:{x: width - margin - 150, y}, thickness:0.5, color: gray });
+
+    y -= 10;
+    page.drawText('with ID number:', { x: margin, y, size: 9, font: fontRegular, color: black });
+    page.drawText(val('signerIdNumber'), { x: margin + 70, y, size: 9, font: fontBold, color: black });
+    page.drawText('hereby acknowledge that', { x: width/2 - 40, y, size: 9, font: fontRegular, color: black });
+
+    y -= 14;
+    page.drawText(val('nurseName'), { x: margin, y, size: 9, font: fontBold, color: black });
+    page.drawText('(name of nurse) has visited me/', { x: width - margin - 150, y, size: 7.5, font: fontItalic, color: gray });
+    y -= 3;
+    page.drawLine({ start:{x: margin, y}, end:{x: width - margin - 155, y}, thickness:0.5, color: gray });
+
+    y -= 12;
+    const patientForNok = val('patientNameIfNok') || val('firstname') + ' ' + val('surname');
+    page.drawText(patientForNok, { x: margin, y, size: 9, font: fontBold, color: black });
+    page.drawText('(name of patient if next of kin is completing the form)', { x: margin, y: y-10, size: 7, font: fontItalic, color: gray });
+    page.drawText('today to deliver the recommended services on', { x: margin + 210, y, size: 8.5, font: fontRegular, color: black });
+    page.drawText(fmtDate(val('serviceDate')), { x: width - margin - 80, y, size: 9, font: fontBold, color: black });
+    y -= 10;
+    page.drawLine({ start:{x: margin, y}, end:{x: margin + 205, y}, thickness:0.5, color: gray });
+
+    y -= 14;
+    page.drawText('at', { x: margin, y, size: 9, font: fontRegular, color: black });
+    page.drawText(val('physicalAddress'), { x: margin + 16, y, size: 9, font: fontBold, color: black });
+    page.drawText('(physical address).', { x: width - margin - 85, y, size: 7.5, font: fontItalic, color: gray });
+    y -= 3;
+    page.drawLine({ start:{x: margin+16, y}, end:{x: width - margin - 88, y}, thickness:0.5, color: gray });
+
+    // Signature 1
+    y -= 14;
+    page.drawText('Signature of patient or next of kin', { x: margin, y, size: 8, font: fontBold, color: gray });
+    page.drawText('Date  ' + fmtDate(val('sig1Date')), { x: width - margin - 120, y, size: 8.5, font: fontRegular, color: black });
+
+    // Draw sig 1 image
+    const sig1DataUrl = pad1.toDataURL('image/png');
+    const sig1Bytes = await fetch(sig1DataUrl).then(r => r.arrayBuffer());
+    const sig1Img = await pdfDoc.embedPng(sig1Bytes);
+    page.drawImage(sig1Img, { x: margin, y: y - 38, width: 180, height: 36 });
+    page.drawLine({ start:{x: margin, y: y-40}, end:{x: margin+200, y: y-40}, thickness:0.5, color: gray });
+    y -= 50;
+
+    // Contact / NoK
+    y = drawRow('Member\'s contact number', val('contactNumber'), y);
+    y = drawRow('Next of kin — Full name and surname', val('nokName'), y);
+
+    y -= 10;
+
+    // Section 2 header
+    page.drawRectangle({ x: margin, y: y - 14, width: W, height: 20, color: blue });
+    page.drawText('2. Discovery Home Care disclaimer', {
+      x: margin + 6, y: y - 10, size: 8.5, font: fontBold, color: white
+    });
+    y -= 28;
+
+    // Disclaimer text
+    const disclaimerLines = [
+      'Home Care is a service Discovery offers as an alternative to receiving healthcare services in a hospital. This means that you',
+      'can receive the healthcare services that you would normally receive from medical professionals while you are in hospital, in the',
+      'comfort of your home. Home Care also provides you with healthcare services in a controlled, safe, sterile, and calm environment',
+      'to allow a faster recovery. The benefits of Discovery Home Care are noticeable when you follow the treatment protocols,',
+      'advice, and instructions that the medical professional gives.',
+      '',
+      'You cannot hold us responsible. You cannot hold Discovery Health, Home Care or any medical professional responsible:',
+      '',
+      '• For any harm or for the cost of any complications that occur if you do not follow their recommendations.',
+      '• For any harm that stems from when you do not adhere to treatment advice given to you.',
+      '• For any harm that you may suffer as a result of you not providing all necessary information about your current health.',
+      '• For any harm due to the unpredictability of COVID-19, which results in hospitalisation or a life-threatening condition.',
+      '',
+      'The medical professional will have direct contact with you.',
+      '',
+      'You acknowledge that the treatment calls for and involves direct contact, including physical contact.',
+      'Since in or around January 2020, there has been and there is still a worldwide pandemic referred to as COVID-19.',
+      'The COVID-19 virus is highly contagious and capable of widespread person-to-person transmission.',
+      'The medical professional may come into direct or close contact with contagious patients and may contract COVID-19.',
+      'There is and can be no guarantee that the medical professional will not be exposed to or contract COVID-19.',
+    ];
+
+    for (const line of disclaimerLines) {
+      if (line === '') { y -= 4; continue; }
+      const isBold = line.startsWith('You cannot hold') || line.startsWith('The medical professional will');
+      page.drawText(line, {
+        x: margin, y,
+        size: 7.5,
+        font: isBold ? fontBold : fontRegular,
+        color: black,
+        maxWidth: W
+      });
+      y -= 10;
+    }
+
+    y -= 8;
+
+    // I, [name] have read...
+    page.drawText('I,', { x: margin, y, size: 9, font: fontRegular, color: black });
+    const disclaimerName = val('disclaimerSignerName') || val('signerName');
+    page.drawText(disclaimerName, { x: margin + 14, y, size: 9, font: fontBold, color: black });
+    page.drawText('have read these terms and conditions and I agree to them.', { x: width - margin - 240, y, size: 8.5, font: fontRegular, color: black });
+    y -= 3;
+    page.drawLine({ start:{x: margin+14, y}, end:{x: width - margin - 245, y}, thickness:0.5, color: gray });
+
+    y -= 14;
+    page.drawText('Signed at', { x: margin, y, size: 9, font: fontRegular, color: black });
+    page.drawText(val('signedAt'), { x: margin + 52, y, size: 9, font: fontBold, color: black });
+    page.drawLine({ start:{x: margin+52, y: y-2}, end:{x: width - margin - 100, y: y-2}, thickness:0.5, color: gray });
+    page.drawText('on  ' + fmtDate(val('sig2Date')), { x: width - margin - 90, y, size: 9, font: fontRegular, color: black });
+
+    // Signature 2
+    y -= 14;
+    page.drawText('Signature', { x: margin, y, size: 8, font: fontBold, color: gray });
+    const sig2DataUrl = pad2.toDataURL('image/png');
+    const sig2Bytes = await fetch(sig2DataUrl).then(r => r.arrayBuffer());
+    const sig2Img = await pdfDoc.embedPng(sig2Bytes);
+    page.drawImage(sig2Img, { x: margin, y: y - 38, width: 180, height: 36 });
+    page.drawLine({ start:{x: margin, y: y-40}, end:{x: margin+200, y: y-40}, thickness:0.5, color: gray });
+    y -= 50;
+
+    // Footer
+    page.drawLine({ start:{x:0, y:52}, end:{x:width, y:52}, thickness:0.5, color: lightGray });
+    page.drawText('Please note that this form expires on 31/03/2027. Updated forms are always available at www.discovery.co.za under MEDICAL AID > Manage your health plan > Find documents, certificates and forms.', {
+      x: margin, y: 38, size: 6, font: fontRegular, color: gray, maxWidth: W - 60
+    });
+    page.drawText('HEAACK001', { x: width - margin - 50, y: 38, size: 7, font: fontBold, color: gray });
+    page.drawText('Discovery Health (Pty) Ltd, registration number 1997/013480/07, an authorised financial service provider and administrator of medical schemes.', {
+      x: margin, y: 26, size: 5.5, font: fontRegular, color: gray, maxWidth: W
+    });
+    page.drawText('Page 1 of 1', { x: width - margin - 35, y: 26, size: 6, font: fontRegular, color: gray });
+    page.drawText('01.02.2026', { x: width - margin - 35, y: 16, size: 6, font: fontRegular, color: gray });
+
+    const pdfBytes = await pdfDoc.save();
+    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const patientSurname = val('surname').replace(/\s+/g, '_') || 'Patient';
+    const dateStr = val('serviceDate') || 'undated';
+    a.href = url;
+    a.download = `Discovery_HomeCare_${patientSurname}_${dateStr}.pdf`;
+    a.click();
+    URL.revokeObjectURL(url);
+
+    showToast('PDF downloaded successfully');
+  } catch (err) {
+    console.error(err);
+    showToast('Error generating PDF. Check console for details.');
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Generate & Download PDF';
+}
+
+window.addEventListener('load', () => {
+  initPads();
+
+  // Auto-fill disclaimer signer name when section 1 name is filled
+  const signerNameInput = document.getElementById('signerName');
+  signerNameInput.addEventListener('blur', () => {
+    const dis = document.getElementById('disclaimerSignerName');
+    if (!dis.value) dis.value = signerNameInput.value;
+  });
+
+  // Progress bar update
+  const allInputs = document.querySelectorAll('input, select');
+  function updateProgress() {
+    const required = ['surname','firstname','idNumber','signerName','signerIdNumber','nurseName','serviceDate','physicalAddress','sig1Date'];
+    const filled = required.filter(id => val(id)).length;
+    const pct = Math.round((filled / required.length) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+  }
+  allInputs.forEach(el => el.addEventListener('input', updateProgress));
+});
+</script>
+</body>
+</html>
