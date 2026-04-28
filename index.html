@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Discovery Home Care – Acknowledgement Form</title>
+<title>Home Care – Acknowledgement Form</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/4.1.7/signature_pad.umd.min.js"></script>
 <style>
@@ -408,7 +408,7 @@
   <div class="brand">
     <div class="logo-mark">D</div>
     <div>
-      <h1>Discovery Home Care</h1>
+      <h1>Home Care</h1>
       <p>Acknowledgement Form — Digital Capture</p>
     </div>
   </div>
@@ -419,7 +419,7 @@
 
   <!-- SECTION 1 -->
   <div class="form-card">
-    <div class="section-header">1. Discovery Home Care Service Acknowledgement Form</div>
+    <div class="section-header">1. Home Care Service Acknowledgement Form</div>
     <div class="section-body">
 
       <div class="field-row title-row">
@@ -469,7 +469,7 @@
         </div>
         <div class="field">
           <label>Scheme Name</label>
-          <input type="text" id="schemeName" placeholder="e.g. Discovery Health"/>
+          <input type="text" id="schemeName" placeholder="e.g. Medical Health Scheme"/>
         </div>
       </div>
 
@@ -550,12 +550,12 @@
 
   <!-- SECTION 2 -->
   <div class="form-card">
-    <div class="section-header">2. Discovery Home Care Disclaimer</div>
+    <div class="section-header">2. Service Provider Home Care Disclaimer</div>
     <div class="section-body">
 
       <div class="disclaimer-text">
-        <p>Home Care is a service Discovery offers as an alternative to receiving healthcare services in a hospital. This means that you can receive the healthcare services that you would normally receive from medical professionals while you are in hospital, in the comfort of your home. Home Care also provides you with healthcare services in a controlled, safe, sterile, and calm environment to allow a faster recovery. The benefits of Discovery Home Care are noticeable when you follow the treatment protocols, advice, and instructions that the medical professional gives.</p>
-        <p><strong>You cannot hold us responsible.</strong> You cannot hold Discovery Health, Home Care or any medical professional responsible:</p>
+        <p>Home Care is a service **** offers as an alternative to receiving healthcare services in a hospital. This means that you can receive the healthcare services that you would normally receive from medical professionals while you are in hospital, in the comfort of your home. Home Care also provides you with healthcare services in a controlled, safe, sterile, and calm environment to allow a faster recovery. The benefits of Discovery Home Care are noticeable when you follow the treatment protocols, advice, and instructions that the medical professional gives.</p>
+        <p><strong>You cannot hold us responsible.</strong> You cannot hold **** Health, Home Care or any medical professional responsible:</p>
         <ul>
           <li>For any harm or for the cost of any complications that occur if you do not follow their recommendations on how and where your treatment should happen.</li>
           <li>For any harm that stems from when you do not adhere to treatment advice given to you</li>
@@ -697,7 +697,7 @@ async function generatePDF() {
     page.drawLine({ start: {x:0, y: height-70}, end: {x:width, y: height-70}, thickness: 3, color: gold });
 
     // Title
-    page.drawText('Discovery Home Care acknowledgement form', {
+    page.drawText('**** Home Care acknowledgement form', {
       x: margin, y: height - 42,
       size: 15, font: fontBold, color: blue
     });
@@ -714,7 +714,7 @@ async function generatePDF() {
 
     // Section 1 header
     page.drawRectangle({ x: margin, y: y - 14, width: W, height: 20, color: blue });
-    page.drawText('1. Discovery Home Care service acknowledgment form', {
+    page.drawText('1. **** Home Care service acknowledgment form', {
       x: margin + 6, y: y - 10, size: 8.5, font: fontBold, color: white
     });
     y -= 26;
@@ -799,20 +799,20 @@ async function generatePDF() {
 
     // Section 2 header
     page.drawRectangle({ x: margin, y: y - 14, width: W, height: 20, color: blue });
-    page.drawText('2. Discovery Home Care disclaimer', {
+    page.drawText('2. ***** Home Care disclaimer', {
       x: margin + 6, y: y - 10, size: 8.5, font: fontBold, color: white
     });
     y -= 28;
 
     // Disclaimer text
     const disclaimerLines = [
-      'Home Care is a service Discovery offers as an alternative to receiving healthcare services in a hospital. This means that you',
+      'Home Care is a service ***** offers as an alternative to receiving healthcare services in a hospital. This means that you',
       'can receive the healthcare services that you would normally receive from medical professionals while you are in hospital, in the',
       'comfort of your home. Home Care also provides you with healthcare services in a controlled, safe, sterile, and calm environment',
       'to allow a faster recovery. The benefits of Discovery Home Care are noticeable when you follow the treatment protocols,',
       'advice, and instructions that the medical professional gives.',
       '',
-      'You cannot hold us responsible. You cannot hold Discovery Health, Home Care or any medical professional responsible:',
+      'You cannot hold us responsible. You cannot hold ***** Health, Home Care or any medical professional responsible:',
       '',
       '• For any harm or for the cost of any complications that occur if you do not follow their recommendations.',
       '• For any harm that stems from when you do not adhere to treatment advice given to you.',
@@ -869,11 +869,11 @@ async function generatePDF() {
 
     // Footer
     page.drawLine({ start:{x:0, y:52}, end:{x:width, y:52}, thickness:0.5, color: lightGray });
-    page.drawText('Please note that this form expires on 31/03/2027. Updated forms are always available at www.discovery.co.za under MEDICAL AID > Manage your health plan > Find documents, certificates and forms.', {
+    page.drawText('Please note that this form expires on 31/03/2027. Updated forms are always available at www.****.co.za under MEDICAL AID > Manage your health plan > Find documents, certificates and forms.', {
       x: margin, y: 38, size: 6, font: fontRegular, color: gray, maxWidth: W - 60
     });
-    page.drawText('HEAACK001', { x: width - margin - 50, y: 38, size: 7, font: fontBold, color: gray });
-    page.drawText('Discovery Health (Pty) Ltd, registration number 1997/013480/07, an authorised financial service provider and administrator of medical schemes.', {
+    page.drawText('ACK001', { x: width - margin - 50, y: 38, size: 7, font: fontBold, color: gray });
+    page.drawText('***** Health (Pty) Ltd, registration number 1997/013480/07, an authorised financial service provider and administrator of medical schemes.', {
       x: margin, y: 26, size: 5.5, font: fontRegular, color: gray, maxWidth: W
     });
     page.drawText('Page 1 of 1', { x: width - margin - 35, y: 26, size: 6, font: fontRegular, color: gray });
@@ -886,7 +886,7 @@ async function generatePDF() {
     const patientSurname = val('surname').replace(/\s+/g, '_') || 'Patient';
     const dateStr = val('serviceDate') || 'undated';
     a.href = url;
-    a.download = `Discovery_HomeCare_${patientSurname}_${dateStr}.pdf`;
+    a.download = `HomeCare_${patientSurname}_${dateStr}.pdf`;
     a.click();
     URL.revokeObjectURL(url);
 
